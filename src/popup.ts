@@ -212,6 +212,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   /**
+   * Recompute a task's completion state from its subtask tree so that the
+   * top-level checkbox and every intermediate parent node stay in sync
+   * after mutations that don't toggle a checkbox directly (add child,
+   * apply template, …).
+   */
+  const recomputeTaskCompletion = (task: Task) => {
+    if (!checkboxProgressDesign.autoCompleteParent) return;
+    recomputeParentCompletion(task.subtasks);
+    const leafCount = countLeaves(task.subtasks);
+    if (leafCount > 0) {
+      task.completed = computeProgressPercent(task.subtasks) === 100;
+    }
+  };
+
+  /**
    * Append a new child subtask under the given parent node id.
    */
   const addChildSubtask = async (
@@ -230,6 +245,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       completed: false
     };
     found.node.children = [...(found.node.children || []), newChild];
+    recomputeTaskCompletion(task);
     await setStorage({ tasks });
     renderTasks();
   };
@@ -283,7 +299,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }));
 
     tasks[taskIndex].subtasks = [...tasks[taskIndex].subtasks, ...newSubtasks];
-    
+    recomputeTaskCompletion(tasks[taskIndex]);
+
     await setStorage({ tasks });
     renderTasks();
   };
@@ -327,13 +344,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
       found.node.completed = completed;
     }
-    if (checkboxProgressDesign.autoCompleteParent) {
-      recomputeParentCompletion(task.subtasks);
-      const leafCount = countLeaves(task.subtasks);
-      if (leafCount > 0) {
-        task.completed = computeProgressPercent(task.subtasks) === 100;
-      }
-    }
+    recomputeTaskCompletion(task);
     await setStorage({ tasks });
     renderTasks();
   };
