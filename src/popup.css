@@ -188,6 +188,15 @@ button:focus-visible {
   border-top: 1px solid var(--border-color);
 }
 
+.template-selector-title {
+  width: 100%;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-color);
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
 .template-option {
   padding: 4px 8px;
   background-color: var(--bg-color);

@@ -86,7 +86,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const selector = document.createElement('div');
     selector.className = 'template-selector';
-    
+
+    const heading = document.createElement('div');
+    heading.className = 'template-selector-title';
+    heading.textContent = t('popup_template_select') || 'Select Template';
+    selector.appendChild(heading);
+
     const templates = getDefaultTemplates();
     templates.forEach(template => {
       const btn = document.createElement('button');
@@ -104,11 +109,11 @@ document.addEventListener('DOMContentLoaded', async () => {
    */
   const applyTemplate = async (taskId: string, templateId: string) => {
     const tasks = await getStorageValue('tasks') || [];
-    const taskIndex = tasks.findIndex(t => t.id === taskId);
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
     if (taskIndex === -1) return;
 
     const templates = getDefaultTemplates();
-    const template = templates.find(t => t.id === templateId);
+    const template = templates.find(tmpl => tmpl.id === templateId);
     if (!template) return;
 
     const newSubtasks: SubTask[] = template.subtasks.map(title => ({
@@ -149,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    */
   const deleteTask = async (id: string) => {
     const tasks = await getStorageValue('tasks') || [];
-    const updatedTasks = tasks.filter(t => t.id !== id);
+    const updatedTasks = tasks.filter(task => task.id !== id);
     await setStorage({ tasks: updatedTasks });
     renderTasks();
   };
