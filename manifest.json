@@ -14,7 +14,7 @@
   },
   "options_page": "src/options.html",
   "background": {
-    "service_worker": "src/background.ts"
+    "service_worker": "background.js"
   },
   "permissions": [
     "storage"
