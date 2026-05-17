@@ -1,0 +1,34 @@
+{
+  "appName": {
+    "message": "タスク分解",
+    "description": "The name of the application."
+  },
+  "appDesc": {
+    "message": "ADHD向け大タスク分解 (テンプレ分解、サブタスク化、達成演出)",
+    "description": "The description of the application."
+  },
+  "popup_title": {
+    "message": "タスク分解",
+    "description": "Title shown in the popup."
+  },
+  "popup_task_placeholder": {
+    "message": "新しいタスクを入力...",
+    "description": "Placeholder for task input."
+  },
+  "popup_add_button": {
+    "message": "追加",
+    "description": "Add button text."
+  },
+  "popup_no_tasks": {
+    "message": "タスクがありません。",
+    "description": "Message shown when there are no tasks."
+  },
+  "options_title": {
+    "message": "設定",
+    "description": "Title for options page."
+  },
+  "options_save": {
+    "message": "保存",
+    "description": "Save button text."
+  }
+}
