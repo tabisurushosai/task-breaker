@@ -2,10 +2,28 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Task Breaker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="appName">Task Breaker</title>
+  <link rel="stylesheet" href="./popup.css">
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <header>
+      <h1 data-i18n="popup_title">Task Breaker</h1>
+    </header>
+
+    <main>
+      <section class="input-area">
+        <input type="text" id="task-input" data-i18n-placeholder="popup_task_placeholder">
+        <button id="add-button" data-i18n="popup_add_button">Add</button>
+      </section>
+
+      <section class="task-list-area">
+        <ul id="task-list"></ul>
+        <p id="no-tasks" data-i18n="popup_no_tasks">No tasks yet.</p>
+      </section>
+    </main>
+  </div>
   <script type="module" src="./popup.ts"></script>
 </body>
 </html>
