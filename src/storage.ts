@@ -31,6 +31,7 @@ export interface Settings {
 export interface StorageSchema {
   trial_start_ts: number;
   premium_unlocked: boolean;
+  instance_id: string;
   tasks: Task[];
   templates: Template[];
   settings: Settings;
@@ -39,6 +40,7 @@ export interface StorageSchema {
 export const STORAGE_KEYS: (keyof StorageSchema)[] = [
   'trial_start_ts',
   'premium_unlocked',
+  'instance_id',
   'tasks',
   'templates',
   'settings'

@@ -122,5 +122,60 @@
     "placeholders": {
       "percent": { "content": "$1", "example": "58" }
     }
+  },
+  "options_premium_header": {
+    "message": "Premium",
+    "description": "Heading for the premium section in options."
+  },
+  "options_premium_intro": {
+    "message": "Premium に解放するとタスク数無制限・詳細統計が使えます (買い切り)。",
+    "description": "Premium value proposition shown on the options page."
+  },
+  "options_premium_buy": {
+    "message": "Premium を購入 ($3)",
+    "description": "Button that opens the Stripe Checkout."
+  },
+  "options_premium_redeem_header": {
+    "message": "アンロックコードを入力",
+    "description": "Heading for the redeem code form."
+  },
+  "options_premium_redeem_help": {
+    "message": "購入後の完了ページに表示されるコードを貼り付けてください。",
+    "description": "Help text under the redeem code form."
+  },
+  "options_premium_redeem_placeholder": {
+    "message": "TBP-XXXX-XXXX-XXXX",
+    "description": "Placeholder for the unlock code input."
+  },
+  "options_premium_redeem_button": {
+    "message": "解放する",
+    "description": "Button label that submits the unlock code."
+  },
+  "options_premium_redeem_success": {
+    "message": "Premium を解放しました ✨",
+    "description": "Shown after the unlock code is accepted."
+  },
+  "options_premium_redeem_already": {
+    "message": "このインストールはすでに Premium です。",
+    "description": "Shown when the user redeems a code on an already-unlocked install."
+  },
+  "options_premium_redeem_invalid": {
+    "message": "コードが正しくありません。もう一度ご確認ください。",
+    "description": "Shown when the unlock code fails validation."
+  },
+  "options_premium_state_unlocked": {
+    "message": "現在のプラン: Premium ✨",
+    "description": "Premium state line for an unlocked install."
+  },
+  "options_premium_state_trial": {
+    "message": "現在のプラン: Premium 体験中 (残り $DAYS$ 日)",
+    "description": "Premium state line for a trial install.",
+    "placeholders": {
+      "days": { "content": "$1", "example": "3" }
+    }
+  },
+  "options_premium_state_free": {
+    "message": "現在のプラン: 無料",
+    "description": "Premium state line for a free install whose trial expired."
   }
 }

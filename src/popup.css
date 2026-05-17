@@ -448,3 +448,39 @@ ul {
   color: var(--text-color);
   opacity: 0.85;
 }
+
+.premium-state {
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.redeem-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.redeem-row input {
+  flex: 1;
+  padding: 6px 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9rem;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.redeem-result {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  min-height: 1em;
+}
+
+.redeem-result-ok {
+  color: #2e8b57;
+}
+
+.redeem-result-error {
+  color: #c0392b;
+}

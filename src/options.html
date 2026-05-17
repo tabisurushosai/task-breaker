@@ -13,9 +13,42 @@
     </header>
 
     <main>
+      <section class="settings-section" id="premium-section">
+        <h2 data-i18n="options_premium_header">Premium</h2>
+        <p id="premium-state" class="premium-state"></p>
+
+        <div id="premium-purchase" hidden>
+          <p data-i18n="options_premium_intro">
+            Premium unlocks unlimited tasks and detailed stats with a one-time
+            purchase.
+          </p>
+          <button id="open-checkout-btn" type="button" data-i18n="options_premium_buy">
+            Buy Premium ($3)
+          </button>
+
+          <h3 data-i18n="options_premium_redeem_header">Redeem unlock code</h3>
+          <p data-i18n="options_premium_redeem_help">
+            After purchase, paste the unlock code shown on the success page.
+          </p>
+          <div class="redeem-row">
+            <input
+              id="unlock-code-input"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              data-i18n-placeholder="options_premium_redeem_placeholder"
+              placeholder="TBP-XXXX-XXXX-XXXX"
+            />
+            <button id="redeem-btn" type="button" data-i18n="options_premium_redeem_button">
+              Redeem
+            </button>
+          </div>
+          <p id="redeem-result" class="redeem-result" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+
       <section class="settings-section">
         <h2 data-i18n="options_general_header">General</h2>
-        <!-- Placeholder for settings -->
         <p>Future settings will appear here.</p>
       </section>
     </main>

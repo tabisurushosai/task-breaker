@@ -122,5 +122,60 @@
     "placeholders": {
       "percent": { "content": "$1", "example": "58" }
     }
+  },
+  "options_premium_header": {
+    "message": "Premium",
+    "description": "Heading for the premium section in options."
+  },
+  "options_premium_intro": {
+    "message": "Premium unlocks unlimited tasks and detailed stats with a one-time purchase.",
+    "description": "Premium value proposition shown on the options page."
+  },
+  "options_premium_buy": {
+    "message": "Buy Premium ($3)",
+    "description": "Button that opens the Stripe Checkout."
+  },
+  "options_premium_redeem_header": {
+    "message": "Redeem unlock code",
+    "description": "Heading for the redeem code form."
+  },
+  "options_premium_redeem_help": {
+    "message": "After purchase, paste the unlock code shown on the success page.",
+    "description": "Help text under the redeem code form."
+  },
+  "options_premium_redeem_placeholder": {
+    "message": "TBP-XXXX-XXXX-XXXX",
+    "description": "Placeholder for the unlock code input."
+  },
+  "options_premium_redeem_button": {
+    "message": "Redeem",
+    "description": "Button label that submits the unlock code."
+  },
+  "options_premium_redeem_success": {
+    "message": "Premium unlocked ✨",
+    "description": "Shown after the unlock code is accepted."
+  },
+  "options_premium_redeem_already": {
+    "message": "This install is already Premium.",
+    "description": "Shown when the user redeems a code on an already-unlocked install."
+  },
+  "options_premium_redeem_invalid": {
+    "message": "That code didn't work. Please double-check and try again.",
+    "description": "Shown when the unlock code fails validation."
+  },
+  "options_premium_state_unlocked": {
+    "message": "Current plan: Premium ✨",
+    "description": "Premium state line for an unlocked install."
+  },
+  "options_premium_state_trial": {
+    "message": "Current plan: Premium trial ($DAYS$ days left)",
+    "description": "Premium state line for a trial install.",
+    "placeholders": {
+      "days": { "content": "$1", "example": "3" }
+    }
+  },
+  "options_premium_state_free": {
+    "message": "Current plan: Free",
+    "description": "Premium state line for a free install whose trial expired."
   }
 }
