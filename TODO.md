@@ -20,7 +20,7 @@
 - [x] T015: src/storage.ts (chrome.storage.local ラッパ、型付き)
 
 ## Phase 3: コア機能実装 (T016-T030 = 15タスク、上の features 5個を3タスクずつ分解)
-- [ ] T016: task-input — 設計
+- [x] T016: task-input — 設計
 - [ ] T017: task-input — 実装
 - [ ] T018: task-input — テスト・整合
 - [ ] T019: template-breaker — 設計

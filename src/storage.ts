@@ -16,6 +16,12 @@ export interface Task {
   createdAt: number;
 }
 
+export interface Template {
+  id: string;
+  title: string;
+  subtasks: string[]; // List of subtask titles
+}
+
 export interface Settings {
   theme: 'auto' | 'light' | 'dark';
   language: 'ja' | 'en';
@@ -25,6 +31,7 @@ export interface StorageSchema {
   trial_start_ts: number;
   premium_unlocked: boolean;
   tasks: Task[];
+  templates: Template[];
   settings: Settings;
 }
 
@@ -32,6 +39,7 @@ export const STORAGE_KEYS: (keyof StorageSchema)[] = [
   'trial_start_ts',
   'premium_unlocked',
   'tasks',
+  'templates',
   'settings'
 ];
 

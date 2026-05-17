@@ -10,6 +10,18 @@ chrome.runtime.onInstalled.addListener((details) => {
       trial_start_ts: Date.now(),
       premium_unlocked: false,
       tasks: [],
+      templates: [
+        {
+          id: 'clean-room',
+          title: '部屋の掃除',
+          subtasks: ['ゴミを捨てる', '洗濯物を畳む', '床を掃除機でかける']
+        },
+        {
+          id: 'study',
+          title: '勉強',
+          subtasks: ['机を片付ける', '教材を準備する', 'タイマーをセットする']
+        }
+      ],
       settings: {
         theme: 'auto',
         language: chrome.i18n.getUILanguage().startsWith('ja') ? 'ja' : 'en'
