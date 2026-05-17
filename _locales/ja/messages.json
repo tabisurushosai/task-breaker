@@ -47,6 +47,14 @@
     "message": "完了を切り替え",
     "description": "ARIA label for the task/subtask completion checkbox."
   },
+  "popup_reward_task_complete": {
+    "message": "タスク完了！おめでとう🎉",
+    "description": "Screen-reader announcement when a top-level task reaches 100% completion."
+  },
+  "popup_reward_leaf_complete": {
+    "message": "サブタスク完了！",
+    "description": "Screen-reader announcement when an individual leaf subtask is completed."
+  },
   "options_title": {
     "message": "設定",
     "description": "Title for options page."

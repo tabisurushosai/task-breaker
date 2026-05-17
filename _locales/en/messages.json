@@ -47,6 +47,14 @@
     "message": "Toggle complete",
     "description": "ARIA label for the task/subtask completion checkbox."
   },
+  "popup_reward_task_complete": {
+    "message": "Task complete! 🎉",
+    "description": "Screen-reader announcement when a top-level task reaches 100% completion."
+  },
+  "popup_reward_leaf_complete": {
+    "message": "Subtask complete!",
+    "description": "Screen-reader announcement when an individual leaf subtask is completed."
+  },
   "options_title": {
     "message": "Settings",
     "description": "Title for options page."
