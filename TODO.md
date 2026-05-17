@@ -30,7 +30,7 @@
 - [x] T023: subtask-tree — 実装
 - [x] T024: subtask-tree — テスト・整合
 - [x] T025: checkbox-progress — 設計
-- [ ] T026: checkbox-progress — 実装
+- [x] T026: checkbox-progress — 実装
 - [ ] T027: checkbox-progress — テスト・整合
 - [ ] T028: reward-anim — 設計
 - [ ] T029: reward-anim — 実装

@@ -2,6 +2,14 @@ import { applyI18n, t } from './i18n';
 import { getStorageValue, setStorage, Task, SubTask } from './storage';
 import { getDefaultTemplates } from './templates';
 import { subTaskTreeDesign, findNode } from './subtask-tree';
+import {
+  checkboxProgressDesign,
+  cascadeComplete,
+  recomputeParentCompletion,
+  computeProgressPercent,
+  formatPercent,
+  countLeaves
+} from './checkbox-progress';
 
 document.addEventListener('DOMContentLoaded', async () => {
   applyI18n();
@@ -28,31 +36,55 @@ document.addEventListener('DOMContentLoaded', async () => {
       tasks.sort((a, b) => b.createdAt - a.createdAt).forEach((task: Task) => {
         const li = document.createElement('li');
         li.className = 'task-item-container';
-        
+
         const mainItem = document.createElement('div');
         mainItem.className = 'task-item';
-        
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'task-checkbox';
+        checkbox.checked = task.completed;
+        checkbox.setAttribute(
+          'aria-label',
+          t(checkboxProgressDesign.ariaLabelKey) || 'Toggle complete'
+        );
+        checkbox.addEventListener('change', () =>
+          toggleTaskComplete(task.id, checkbox.checked)
+        );
+
         const titleSpan = document.createElement('span');
         titleSpan.className = 'task-title';
+        if (task.completed) titleSpan.classList.add('completed');
         titleSpan.textContent = task.title;
-        
+
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'task-actions';
+
+        const leafCount = countLeaves(task.subtasks);
+        if (leafCount > 0) {
+          const progressSpan = document.createElement('span');
+          progressSpan.className = 'task-progress';
+          progressSpan.textContent = formatPercent(
+            computeProgressPercent(task.subtasks)
+          );
+          actionsDiv.appendChild(progressSpan);
+        }
 
         const templateBtn = document.createElement('button');
         templateBtn.className = 'template-btn';
         templateBtn.textContent = '🪄';
         templateBtn.title = t('popup_template_button') || 'Use Template';
         templateBtn.addEventListener('click', () => toggleTemplateList(task.id, li));
-        
+
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
         deleteBtn.textContent = t('popup_delete_button');
         deleteBtn.addEventListener('click', () => deleteTask(task.id));
-        
+
         actionsDiv.appendChild(templateBtn);
         actionsDiv.appendChild(deleteBtn);
-        
+
+        mainItem.appendChild(checkbox);
         mainItem.appendChild(titleSpan);
         mainItem.appendChild(actionsDiv);
         li.appendChild(mainItem);
@@ -87,8 +119,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       const row = document.createElement('div');
       row.className = 'subtask-row';
 
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'subtask-checkbox';
+      checkbox.checked = node.completed;
+      checkbox.setAttribute(
+        'aria-label',
+        t(checkboxProgressDesign.ariaLabelKey) || 'Toggle complete'
+      );
+      checkbox.addEventListener('change', () =>
+        toggleSubtaskComplete(taskId, node.id, checkbox.checked)
+      );
+      row.appendChild(checkbox);
+
       const titleSpan = document.createElement('span');
       titleSpan.className = 'subtask-title';
+      if (node.completed) titleSpan.classList.add('completed');
       titleSpan.textContent = node.title;
       row.appendChild(titleSpan);
 
@@ -238,6 +284,56 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     tasks[taskIndex].subtasks = [...tasks[taskIndex].subtasks, ...newSubtasks];
     
+    await setStorage({ tasks });
+    renderTasks();
+  };
+
+  /**
+   * Toggle the completed state of a top-level task. Cascades to all
+   * descendant subtasks when the design enables it.
+   */
+  const toggleTaskComplete = async (taskId: string, completed: boolean) => {
+    const tasks = (await getStorageValue('tasks')) || [];
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) return;
+
+    task.completed = completed;
+    if (checkboxProgressDesign.cascadeOnToggle && task.subtasks) {
+      for (const child of task.subtasks) {
+        cascadeComplete(child, completed);
+      }
+    }
+    await setStorage({ tasks });
+    renderTasks();
+  };
+
+  /**
+   * Toggle the completed state of a subtask node. Cascades to descendants
+   * and recomputes parent completion when enabled.
+   */
+  const toggleSubtaskComplete = async (
+    taskId: string,
+    nodeId: string,
+    completed: boolean
+  ) => {
+    const tasks = (await getStorageValue('tasks')) || [];
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) return;
+    const found = findNode(task.subtasks, nodeId);
+    if (!found) return;
+
+    if (checkboxProgressDesign.cascadeOnToggle) {
+      cascadeComplete(found.node, completed);
+    } else {
+      found.node.completed = completed;
+    }
+    if (checkboxProgressDesign.autoCompleteParent) {
+      recomputeParentCompletion(task.subtasks);
+      const leafCount = countLeaves(task.subtasks);
+      if (leafCount > 0) {
+        task.completed = computeProgressPercent(task.subtasks) === 100;
+      }
+    }
     await setStorage({ tasks });
     renderTasks();
   };

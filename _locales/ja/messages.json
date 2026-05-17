@@ -43,6 +43,10 @@
     "message": "サブタスクを入力...",
     "description": "Placeholder for the add-subtask inline input."
   },
+  "popup_toggle_complete": {
+    "message": "完了を切り替え",
+    "description": "ARIA label for the task/subtask completion checkbox."
+  },
   "options_title": {
     "message": "設定",
     "description": "Title for options page."
