@@ -34,7 +34,7 @@
 - [x] T027: checkbox-progress — テスト・整合
 - [x] T028: reward-anim — 設計
 - [x] T029: reward-anim — 実装
-- [ ] T030: reward-anim — テスト・整合
+- [x] T030: reward-anim — テスト・整合
 
 ## Phase 4: Premium ゲート (T031-T033)
 - [ ] T031: src/premium.ts (trial_start_ts 管理、is_premium / is_trial 判定関数)

@@ -72,6 +72,13 @@ export function playReward(tier: RewardTier): void {
     }
   }
 
+  // Remove any in-flight reward overlay before showing a new one so
+  // rapid toggles don't pile up stacked emojis (and so a "task" tier
+  // celebration replaces, rather than overlaps, a still-fading "leaf"
+  // tier overlay from the previous toggle).
+  const stale = document.getElementsByClassName(rewardAnimDesign.overlayClass);
+  while (stale.length > 0) stale[0].remove();
+
   document.body.appendChild(overlay);
 
   window.setTimeout(() => {
