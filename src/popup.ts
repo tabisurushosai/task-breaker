@@ -1,5 +1,6 @@
 import { applyI18n, t } from './i18n';
-import { getStorageValue, setStorage, Task } from './storage';
+import { getStorageValue, setStorage, Task, SubTask } from './storage';
+import { getDefaultTemplates } from './templates';
 
 document.addEventListener('DOMContentLoaded', async () => {
   applyI18n();
@@ -25,22 +26,101 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       tasks.sort((a, b) => b.createdAt - a.createdAt).forEach((task: Task) => {
         const li = document.createElement('li');
-        li.className = 'task-item';
+        li.className = 'task-item-container';
+        
+        const mainItem = document.createElement('div');
+        mainItem.className = 'task-item';
         
         const titleSpan = document.createElement('span');
         titleSpan.className = 'task-title';
         titleSpan.textContent = task.title;
+        
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'task-actions';
+
+        const templateBtn = document.createElement('button');
+        templateBtn.className = 'template-btn';
+        templateBtn.textContent = '🪄';
+        templateBtn.title = t('popup_template_button') || 'Use Template';
+        templateBtn.addEventListener('click', () => toggleTemplateList(task.id, li));
         
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
         deleteBtn.textContent = t('popup_delete_button');
         deleteBtn.addEventListener('click', () => deleteTask(task.id));
         
-        li.appendChild(titleSpan);
-        li.appendChild(deleteBtn);
+        actionsDiv.appendChild(templateBtn);
+        actionsDiv.appendChild(deleteBtn);
+        
+        mainItem.appendChild(titleSpan);
+        mainItem.appendChild(actionsDiv);
+        li.appendChild(mainItem);
+
+        // Subtasks list (even if empty)
+        if (task.subtasks && task.subtasks.length > 0) {
+          const subUl = document.createElement('ul');
+          subUl.className = 'subtask-list';
+          task.subtasks.forEach(sub => {
+            const subLi = document.createElement('li');
+            subLi.className = 'subtask-item';
+            subLi.textContent = sub.title;
+            subUl.appendChild(subLi);
+          });
+          li.appendChild(subUl);
+        }
+
         taskList.appendChild(li);
       });
     }
+  };
+
+  /**
+   * Toggle template selection list
+   */
+  const toggleTemplateList = (taskId: string, container: HTMLElement) => {
+    const existingList = container.querySelector('.template-selector');
+    if (existingList) {
+      existingList.remove();
+      return;
+    }
+
+    const selector = document.createElement('div');
+    selector.className = 'template-selector';
+    
+    const templates = getDefaultTemplates();
+    templates.forEach(template => {
+      const btn = document.createElement('button');
+      btn.className = 'template-option';
+      btn.textContent = template.title;
+      btn.addEventListener('click', () => applyTemplate(taskId, template.id));
+      selector.appendChild(btn);
+    });
+
+    container.appendChild(selector);
+  };
+
+  /**
+   * Apply a template to a task
+   */
+  const applyTemplate = async (taskId: string, templateId: string) => {
+    const tasks = await getStorageValue('tasks') || [];
+    const taskIndex = tasks.findIndex(t => t.id === taskId);
+    if (taskIndex === -1) return;
+
+    const templates = getDefaultTemplates();
+    const template = templates.find(t => t.id === templateId);
+    if (!template) return;
+
+    const newSubtasks: SubTask[] = template.subtasks.map(title => ({
+      id: crypto.randomUUID(),
+      title,
+      completed: false
+    }));
+
+    tasks[taskIndex].subtasks = [...tasks[taskIndex].subtasks, ...newSubtasks];
+    
+    await setStorage({ tasks });
+    renderTasks();
   };
 
   /**
