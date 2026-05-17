@@ -19,6 +19,10 @@
     "message": "追加",
     "description": "Add button text."
   },
+  "popup_delete_button": {
+    "message": "削除",
+    "description": "Delete button text."
+  },
   "popup_no_tasks": {
     "message": "タスクがありません。",
     "description": "Message shown when there are no tasks."

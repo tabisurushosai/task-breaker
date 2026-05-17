@@ -19,6 +19,10 @@
     "message": "Add",
     "description": "Add button text."
   },
+  "popup_delete_button": {
+    "message": "Delete",
+    "description": "Delete button text."
+  },
   "popup_no_tasks": {
     "message": "No tasks yet.",
     "description": "Message shown when there are no tasks."

@@ -1,4 +1,4 @@
-import { applyI18n } from './i18n';
+import { applyI18n, t } from './i18n';
 import { getStorageValue, setStorage, Task } from './storage';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -23,9 +23,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       noTasks.style.display = 'none';
       taskList.innerHTML = '';
       
-      tasks.forEach((task: Task) => {
+      tasks.sort((a, b) => b.createdAt - a.createdAt).forEach((task: Task) => {
         const li = document.createElement('li');
-        li.textContent = task.title;
+        li.className = 'task-item';
+        
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'task-title';
+        titleSpan.textContent = task.title;
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.textContent = t('popup_delete_button');
+        deleteBtn.addEventListener('click', () => deleteTask(task.id));
+        
+        li.appendChild(titleSpan);
+        li.appendChild(deleteBtn);
         taskList.appendChild(li);
       });
     }
@@ -47,8 +59,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       createdAt: Date.now()
     };
 
-    await setStorage({ tasks: [...tasks, newTask] });
+    await setStorage({ tasks: [newTask, ...tasks] });
     taskInput.value = '';
+    renderTasks();
+  };
+
+  /**
+   * Delete a task
+   */
+  const deleteTask = async (id: string) => {
+    const tasks = await getStorageValue('tasks') || [];
+    const updatedTasks = tasks.filter(t => t.id !== id);
+    await setStorage({ tasks: updatedTasks });
     renderTasks();
   };
 
