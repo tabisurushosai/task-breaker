@@ -1,0 +1,18 @@
+{
+  "name": "task-breaker",
+  "version": "0.1.0",
+  "description": "ADHD oriented task breaker extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "tsc --noEmit",
+    "package": "npm run build && cd dist && zip -r ../release/task-breaker.zip ."
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  }
+}

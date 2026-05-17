@@ -1,5 +1,6 @@
 #!/bin/bash
 PROJ_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJ_NAME=$(basename "$PROJ_DIR")
 cd "$PROJ_DIR" || exit 1
 mkdir -p logs
 
@@ -12,21 +13,44 @@ while [ $LOOP_COUNT -lt $MAX_LOOPS ]; do
   REM=${REM:-0}
 
   if [ "$REM" -le 0 ]; then
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] TODO 全消化、ループ終了。"
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] === COMPLETED ===" >> logs/gemini_$(date +%Y%m%d).log
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$PROJ_NAME] TODO 全消化、終了" | tee -a logs/gemini_$(date +%Y%m%d).log
     break
   fi
 
-  PROJ_NAME=$(basename "$PROJ_DIR")
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$PROJ_NAME Loop $LOOP_COUNT] 残 $REM タスク..." | tee -a logs/gemini_$(date +%Y%m%d).log
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$PROJ_NAME Loop $LOOP_COUNT] 残 $REM タスク (yolo)..." | tee -a logs/gemini_$(date +%Y%m%d).log
 
-  timeout 600 gemini -p "Read SPEC.md and TODO.md. Pick the FIRST unchecked TODO (line starting with '- [ ]'). Implement only ONE task. After implementing, update TODO.md to mark [x] for that task. Then git commit with message 'T<id>: <task summary>'. Stack: Manifest V3, TypeScript+Vite, chrome.storage.local, chrome.i18n. No external API (except where explicitly stated in SPEC.md), no personal data collection, ads-free, minimum permissions. Do ONE task only this run. If git is not initialized, run 'git init && git add -A && git commit -m \"chore: initial\"' first." 2>&1 | tee -a logs/gemini_$(date +%Y%m%d).log
+  PROMPT="DO NOT ASK FOR APPROVAL. DO NOT PROPOSE PLANS. DO NOT WAIT FOR CONFIRMATION.
+
+You are an autonomous coding agent for project $PROJ_NAME. The user is sleeping and will NOT respond to any questions. Execute immediately.
+
+INSTRUCTIONS:
+1. Read SPEC.md and TODO.md
+2. Pick the FIRST unchecked task '- [ ]' in TODO.md
+3. Implement it directly. No plan, no proposal, no confirmation.
+4. If you cannot use a tool, find a workaround. Do not stop.
+5. Mark the task as '[x]' in TODO.md
+6. Run: git add -A && git commit -m 'Txxx: <summary>'
+7. Report completion in one line and exit.
+
+ABSOLUTELY FORBIDDEN:
+- 'Does this strategy look good?' style questions
+- Plan Mode proposals
+- 'I will create...' future tense (just do it)
+- 'Please confirm' phrases
+- Waiting for user input
+
+STACK: Manifest V3, TypeScript+Vite, chrome.storage.local, chrome.i18n
+RULES: no external API, no personal data, no ads, minimum permissions
+
+Execute ONE task. Then exit."
+
+  gtimeout 900 gemini --yolo -p "$PROMPT" 2>&1 | tee -a logs/gemini_$(date +%Y%m%d).log
   RC=${PIPESTATUS[0]}
 
   if [ "$RC" -ne 0 ]; then
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Gemini エラー (RC=$RC)、6分待機..." | tee -a logs/gemini_$(date +%Y%m%d).log
-    sleep 360
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] [$PROJ_NAME] Gemini エラー (RC=$RC)、3分待機..." | tee -a logs/gemini_$(date +%Y%m%d).log
+    sleep 180
   else
-    sleep 12
+    sleep 8
   fi
 done
