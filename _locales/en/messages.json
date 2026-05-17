@@ -23,6 +23,14 @@
     "message": "Delete",
     "description": "Delete button text."
   },
+  "popup_template_button": {
+    "message": "🪄",
+    "description": "Magic wand icon for template breaker."
+  },
+  "popup_template_select": {
+    "message": "Select Template",
+    "description": "Title for template selection."
+  },
   "popup_no_tasks": {
     "message": "No tasks yet.",
     "description": "Message shown when there are no tasks."

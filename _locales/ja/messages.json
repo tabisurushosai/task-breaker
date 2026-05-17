@@ -23,6 +23,14 @@
     "message": "削除",
     "description": "Delete button text."
   },
+  "popup_template_button": {
+    "message": "🪄",
+    "description": "Magic wand icon for template breaker."
+  },
+  "popup_template_select": {
+    "message": "テンプレを選択",
+    "description": "Title for template selection."
+  },
   "popup_no_tasks": {
     "message": "タスクがありません。",
     "description": "Message shown when there are no tasks."

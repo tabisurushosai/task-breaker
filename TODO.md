@@ -23,7 +23,7 @@
 - [x] T016: task-input — 設計
 - [x] T017: task-input — 実装
 - [x] T018: task-input — テスト・整合
-- [ ] T019: template-breaker — 設計
+- [x] T019: template-breaker — 設計
 - [ ] T020: template-breaker — 実装
 - [ ] T021: template-breaker — テスト・整合
 - [ ] T022: subtask-tree — 設計
