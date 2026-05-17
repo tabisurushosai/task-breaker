@@ -138,7 +138,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     input.placeholder = t('popup_add_subtask_placeholder') || 'Enter a subtask...';
     wrapper.appendChild(input);
 
+    let submitted = false;
     const submit = async () => {
+      if (submitted) return;
+      submitted = true;
       const value = input.value.trim();
       if (!value) {
         wrapper.remove();
@@ -147,8 +150,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       await addChildSubtask(taskId, parentNodeId, value);
     };
 
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') submit();
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        submit();
+      } else if (e.key === 'Escape') {
+        submitted = true;
+        wrapper.remove();
+      }
     });
     input.addEventListener('blur', submit);
 
