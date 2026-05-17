@@ -1,6 +1,7 @@
 import { applyI18n, t } from './i18n';
 import { getStorageValue, setStorage, Task, SubTask } from './storage';
 import { getDefaultTemplates } from './templates';
+import { subTaskTreeDesign, findNode } from './subtask-tree';
 
 document.addEventListener('DOMContentLoaded', async () => {
   applyI18n();
@@ -56,22 +57,126 @@ document.addEventListener('DOMContentLoaded', async () => {
         mainItem.appendChild(actionsDiv);
         li.appendChild(mainItem);
 
-        // Subtasks list (even if empty)
         if (task.subtasks && task.subtasks.length > 0) {
-          const subUl = document.createElement('ul');
-          subUl.className = 'subtask-list';
-          task.subtasks.forEach(sub => {
-            const subLi = document.createElement('li');
-            subLi.className = 'subtask-item';
-            subLi.textContent = sub.title;
-            subUl.appendChild(subLi);
-          });
+          const subUl = renderSubtaskTree(task.id, task.subtasks, 0);
           li.appendChild(subUl);
         }
 
         taskList.appendChild(li);
       });
     }
+  };
+
+  /**
+   * Recursively render a subtask tree as a nested <ul>.
+   * depth is the 0-based depth of the children being rendered.
+   */
+  const renderSubtaskTree = (
+    taskId: string,
+    nodes: SubTask[],
+    depth: number
+  ): HTMLUListElement => {
+    const ul = document.createElement('ul');
+    ul.className = 'subtask-list';
+    ul.style.paddingLeft = `${30 + depth * subTaskTreeDesign.indentPx}px`;
+
+    nodes.forEach((node) => {
+      const subLi = document.createElement('li');
+      subLi.className = 'subtask-item';
+
+      const row = document.createElement('div');
+      row.className = 'subtask-row';
+
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'subtask-title';
+      titleSpan.textContent = node.title;
+      row.appendChild(titleSpan);
+
+      if (depth < subTaskTreeDesign.maxDepth) {
+        const addChildBtn = document.createElement('button');
+        addChildBtn.className = 'add-child-btn';
+        addChildBtn.textContent = subTaskTreeDesign.addChildIcon;
+        addChildBtn.title = t('popup_add_subtask') || 'Add subtask';
+        addChildBtn.addEventListener('click', () =>
+          promptAddChild(taskId, node.id, subLi)
+        );
+        row.appendChild(addChildBtn);
+      }
+
+      subLi.appendChild(row);
+
+      if (node.children && node.children.length > 0) {
+        const childUl = renderSubtaskTree(taskId, node.children, depth + 1);
+        subLi.appendChild(childUl);
+      }
+
+      ul.appendChild(subLi);
+    });
+
+    return ul;
+  };
+
+  /**
+   * Show an inline input under the node to add a child subtask.
+   */
+  const promptAddChild = (
+    taskId: string,
+    parentNodeId: string,
+    container: HTMLElement
+  ) => {
+    const existing = container.querySelector(':scope > .add-child-input');
+    if (existing) {
+      existing.remove();
+      return;
+    }
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'add-child-input';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = t('popup_add_subtask_placeholder') || 'Enter a subtask...';
+    wrapper.appendChild(input);
+
+    const submit = async () => {
+      const value = input.value.trim();
+      if (!value) {
+        wrapper.remove();
+        return;
+      }
+      await addChildSubtask(taskId, parentNodeId, value);
+    };
+
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') submit();
+    });
+    input.addEventListener('blur', submit);
+
+    container.appendChild(wrapper);
+    input.focus();
+  };
+
+  /**
+   * Append a new child subtask under the given parent node id.
+   */
+  const addChildSubtask = async (
+    taskId: string,
+    parentNodeId: string,
+    title: string
+  ) => {
+    const tasks = (await getStorageValue('tasks')) || [];
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) return;
+    const found = findNode(task.subtasks, parentNodeId);
+    if (!found) return;
+    const newChild: SubTask = {
+      id: crypto.randomUUID(),
+      title,
+      completed: false
+    };
+    found.node.children = [...(found.node.children || []), newChild];
+    await setStorage({ tasks });
+    renderTasks();
   };
 
   /**

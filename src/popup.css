@@ -172,11 +172,55 @@ button:focus-visible {
   }
 }
 
-.subtask-item::before {
+.subtask-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.subtask-title {
+  flex: 1;
+}
+
+.subtask-row::before {
   content: "•";
-  position: absolute;
-  left: -12px;
   color: var(--primary-color);
+  margin-right: 4px;
+}
+
+.add-child-btn {
+  padding: 2px 6px;
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 4px;
+  opacity: 0.6;
+}
+
+.add-child-btn:hover {
+  opacity: 1;
+  border-color: var(--primary-color);
+}
+
+.add-child-input {
+  margin-top: 4px;
+  padding-left: 4px;
+}
+
+.add-child-input input[type="text"] {
+  width: 100%;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+}
+
+.subtask-item .subtask-list {
+  border-top: none;
+  padding-top: 4px;
+  padding-bottom: 0;
+  margin-top: 4px;
 }
 
 .template-selector {

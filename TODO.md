@@ -27,7 +27,7 @@
 - [x] T020: template-breaker — 実装
 - [x] T021: template-breaker — テスト・整合
 - [x] T022: subtask-tree — 設計
-- [ ] T023: subtask-tree — 実装
+- [x] T023: subtask-tree — 実装
 - [ ] T024: subtask-tree — テスト・整合
 - [ ] T025: checkbox-progress — 設計
 - [ ] T026: checkbox-progress — 実装

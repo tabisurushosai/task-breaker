@@ -35,6 +35,14 @@
     "message": "タスクがありません。",
     "description": "Message shown when there are no tasks."
   },
+  "popup_add_subtask": {
+    "message": "サブタスクを追加",
+    "description": "Title for the add-subtask button on a tree node."
+  },
+  "popup_add_subtask_placeholder": {
+    "message": "サブタスクを入力...",
+    "description": "Placeholder for the add-subtask inline input."
+  },
   "options_title": {
     "message": "設定",
     "description": "Title for options page."

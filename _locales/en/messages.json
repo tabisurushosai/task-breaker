@@ -35,6 +35,14 @@
     "message": "No tasks yet.",
     "description": "Message shown when there are no tasks."
   },
+  "popup_add_subtask": {
+    "message": "Add subtask",
+    "description": "Title for the add-subtask button on a tree node."
+  },
+  "popup_add_subtask_placeholder": {
+    "message": "Enter a subtask...",
+    "description": "Placeholder for the add-subtask inline input."
+  },
   "options_title": {
     "message": "Settings",
     "description": "Title for options page."
