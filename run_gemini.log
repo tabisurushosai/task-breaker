@@ -85,3 +85,9 @@ T011 completed: Implemented basic layout and i18n attributes in src/popup.html a
 YOLO mode is enabled. All tool calls will be automatically approved.
 YOLO mode is enabled. All tool calls will be automatically approved.
 Ripgrep is not available. Falling back to GrepTool.
+Completed T012: Implemented accessible and dark-mode-ready popup.css.
+[2026-05-17 23:12:45] [task-breaker Loop 13] 残 23 タスク (yolo)...
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.
+Attempt 1 failed: You have exhausted your capacity on this model. Your quota will reset after 0s.. Retrying after 5905ms...
