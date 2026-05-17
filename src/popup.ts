@@ -12,6 +12,13 @@ import {
 } from './checkbox-progress';
 import { decideRewardTier, TaskRewardSnapshot } from './reward-anim';
 import { playReward } from './reward-anim-render';
+import {
+  getPremiumStatus,
+  canAddTask,
+  computeDetailedStats,
+  FREE_TIER_MAX_TASKS,
+  PremiumStatus
+} from './premium';
 
 document.addEventListener('DOMContentLoaded', async () => {
   applyI18n();
@@ -20,13 +27,88 @@ document.addEventListener('DOMContentLoaded', async () => {
   const addButton = document.getElementById('add-button') as HTMLButtonElement;
   const taskList = document.getElementById('task-list') as HTMLUListElement;
   const noTasks = document.getElementById('no-tasks') as HTMLParagraphElement;
+  const premiumBanner = document.getElementById('premium-banner') as HTMLDivElement;
+  const premiumStatusEl = document.getElementById('premium-status') as HTMLSpanElement;
+  const premiumUpgradeBtn = document.getElementById('premium-upgrade') as HTMLButtonElement;
+  const limitNotice = document.getElementById('limit-notice') as HTMLParagraphElement;
+  const statsPanel = document.getElementById('stats-panel') as HTMLElement;
+  const statsTasks = document.getElementById('stats-tasks') as HTMLParagraphElement;
+  const statsLeaves = document.getElementById('stats-leaves') as HTMLParagraphElement;
+  const statsOverall = document.getElementById('stats-overall') as HTMLParagraphElement;
+
+  let premiumStatus: PremiumStatus = {
+    isPremium: false,
+    isTrial: false,
+    trialDaysRemaining: 0,
+    trialStartTs: 0
+  };
+
+  /**
+   * Render the premium status banner + the Premium-only stats panel.
+   * Locked free users see an upgrade CTA; trial users see remaining days.
+   */
+  const renderPremiumUi = (tasks: Task[]) => {
+    premiumBanner.hidden = false;
+    if (premiumStatus.isPremium && !premiumStatus.isTrial) {
+      premiumStatusEl.textContent = t('popup_premium_unlocked');
+      premiumUpgradeBtn.hidden = true;
+    } else if (premiumStatus.isTrial) {
+      premiumStatusEl.textContent = t('popup_premium_trial_remaining', [
+        String(premiumStatus.trialDaysRemaining)
+      ]);
+      premiumUpgradeBtn.hidden = false;
+    } else {
+      premiumStatusEl.textContent = t('popup_premium_locked', [
+        String(FREE_TIER_MAX_TASKS)
+      ]);
+      premiumUpgradeBtn.hidden = false;
+    }
+
+    const atCap = !canAddTask(premiumStatus, tasks.length);
+    if (atCap && !premiumStatus.isPremium) {
+      limitNotice.hidden = false;
+      limitNotice.textContent = t('popup_premium_limit_reached', [
+        String(FREE_TIER_MAX_TASKS)
+      ]);
+      addButton.disabled = true;
+      taskInput.disabled = true;
+    } else {
+      limitNotice.hidden = true;
+      limitNotice.textContent = '';
+      addButton.disabled = false;
+      taskInput.disabled = false;
+    }
+
+    if (premiumStatus.isPremium) {
+      const stats = computeDetailedStats(tasks);
+      statsPanel.hidden = false;
+      statsTasks.textContent = t('popup_stats_tasks', [
+        String(stats.completedTasks),
+        String(stats.totalTasks)
+      ]);
+      statsLeaves.textContent = t('popup_stats_leaves', [
+        String(stats.completedLeaves),
+        String(stats.totalLeaves)
+      ]);
+      statsOverall.textContent = t('popup_stats_overall', [
+        stats.overallPercent.toFixed(0)
+      ]);
+    } else {
+      statsPanel.hidden = true;
+    }
+  };
+
+  premiumUpgradeBtn.addEventListener('click', () => {
+    chrome.runtime.openOptionsPage();
+  });
 
   /**
    * Render the task list
    */
   const renderTasks = async () => {
     const tasks = await getStorageValue('tasks') || [];
-    
+    renderPremiumUi(tasks);
+
     if (tasks.length === 0) {
       taskList.style.display = 'none';
       noTasks.style.display = 'block';
@@ -375,6 +457,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!title) return;
 
     const tasks = await getStorageValue('tasks') || [];
+    if (!canAddTask(premiumStatus, tasks.length)) {
+      renderPremiumUi(tasks);
+      return;
+    }
     const newTask: Task = {
       id: crypto.randomUUID(),
       title,
@@ -405,6 +491,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Initial render
+  // Load premium status once, then render. Status is stable across the
+  // popup lifetime (trial state only changes day-to-day; purchase changes
+  // are reflected on next popup open).
+  premiumStatus = await getPremiumStatus();
   renderTasks();
 });

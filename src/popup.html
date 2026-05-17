@@ -10,6 +10,10 @@
   <div id="app">
     <header>
       <h1 data-i18n="popup_title">Task Breaker</h1>
+      <div id="premium-banner" class="premium-banner" hidden>
+        <span id="premium-status" class="premium-status"></span>
+        <button id="premium-upgrade" class="premium-upgrade" hidden data-i18n="popup_premium_upgrade">Unlock Premium</button>
+      </div>
     </header>
 
     <main>
@@ -17,10 +21,18 @@
         <input type="text" id="task-input" data-i18n-placeholder="popup_task_placeholder">
         <button id="add-button" data-i18n="popup_add_button">Add</button>
       </section>
+      <p id="limit-notice" class="limit-notice" hidden></p>
 
       <section class="task-list-area">
         <ul id="task-list"></ul>
         <p id="no-tasks" data-i18n="popup_no_tasks">No tasks yet.</p>
+      </section>
+
+      <section id="stats-panel" class="stats-panel" hidden>
+        <h2 class="stats-heading" data-i18n="popup_stats_heading">Detailed stats</h2>
+        <p id="stats-tasks" class="stats-line"></p>
+        <p id="stats-leaves" class="stats-line"></p>
+        <p id="stats-overall" class="stats-line"></p>
       </section>
     </main>
   </div>

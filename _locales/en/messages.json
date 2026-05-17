@@ -66,5 +66,61 @@
   "options_general_header": {
     "message": "General Settings",
     "description": "Header for general settings."
+  },
+  "popup_premium_trial_remaining": {
+    "message": "Premium trial ($DAYS$ days left)",
+    "description": "Status banner shown to users in the active 7-day trial.",
+    "placeholders": {
+      "days": { "content": "$1", "example": "3" }
+    }
+  },
+  "popup_premium_unlocked": {
+    "message": "Premium unlocked ✨",
+    "description": "Status banner for users who purchased Premium."
+  },
+  "popup_premium_locked": {
+    "message": "Free plan (up to $LIMIT$ tasks)",
+    "description": "Status banner for users on the free tier after trial expired.",
+    "placeholders": {
+      "limit": { "content": "$1", "example": "5" }
+    }
+  },
+  "popup_premium_upgrade": {
+    "message": "Unlock Premium",
+    "description": "Button label that opens the upgrade flow."
+  },
+  "popup_premium_limit_reached": {
+    "message": "Free plan limit ($LIMIT$ tasks) reached. Unlock unlimited with Premium.",
+    "description": "Inline notice when a free user hits the task cap.",
+    "placeholders": {
+      "limit": { "content": "$1", "example": "5" }
+    }
+  },
+  "popup_stats_heading": {
+    "message": "Detailed stats (Premium)",
+    "description": "Heading of the Premium-only statistics section."
+  },
+  "popup_stats_tasks": {
+    "message": "Tasks: $DONE$ / $TOTAL$",
+    "description": "Stats line: completed vs. total top-level tasks.",
+    "placeholders": {
+      "done": { "content": "$1", "example": "2" },
+      "total": { "content": "$2", "example": "5" }
+    }
+  },
+  "popup_stats_leaves": {
+    "message": "Subtasks: $DONE$ / $TOTAL$",
+    "description": "Stats line: completed vs. total leaf subtasks.",
+    "placeholders": {
+      "done": { "content": "$1", "example": "7" },
+      "total": { "content": "$2", "example": "12" }
+    }
+  },
+  "popup_stats_overall": {
+    "message": "Overall progress: $PERCENT$%",
+    "description": "Stats line: aggregate completion percentage.",
+    "placeholders": {
+      "percent": { "content": "$1", "example": "58" }
+    }
   }
 }
