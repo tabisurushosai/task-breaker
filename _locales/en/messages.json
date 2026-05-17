@@ -1,0 +1,34 @@
+{
+  "appName": {
+    "message": "Task Breaker",
+    "description": "The name of the application."
+  },
+  "appDesc": {
+    "message": "Task decomposition for ADHD (Template decomposition, subtasks, achievement effects)",
+    "description": "The description of the application."
+  },
+  "popup_title": {
+    "message": "Task Breaker",
+    "description": "Title shown in the popup."
+  },
+  "popup_task_placeholder": {
+    "message": "Enter a new task...",
+    "description": "Placeholder for task input."
+  },
+  "popup_add_button": {
+    "message": "Add",
+    "description": "Add button text."
+  },
+  "popup_no_tasks": {
+    "message": "No tasks yet.",
+    "description": "Message shown when there are no tasks."
+  },
+  "options_title": {
+    "message": "Settings",
+    "description": "Title for options page."
+  },
+  "options_save": {
+    "message": "Save",
+    "description": "Save button text."
+  }
+}

@@ -32,3 +32,9 @@ YOLO mode is enabled. All tool calls will be automatically approved.
 YOLO mode is enabled. All tool calls will be automatically approved.
 Ripgrep is not available. Falling back to GrepTool.
 Attempt 1 failed: You have exhausted your capacity on this model. Your quota will reset after 1s.. Retrying after 5334ms...
+Completed T005: Created _locales/ja/messages.json and updated TODO.md.
+[2026-05-17 23:04:45] [task-breaker Loop 6] 残 30 タスク (yolo)...
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Ripgrep is not available. Falling back to GrepTool.
+Attempt 1 failed: You have exhausted your capacity on this model. Your quota will reset after 0s.. Retrying after 5053ms...
