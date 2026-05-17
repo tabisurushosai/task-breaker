@@ -33,7 +33,7 @@
 - [x] T026: checkbox-progress — 実装
 - [x] T027: checkbox-progress — テスト・整合
 - [x] T028: reward-anim — 設計
-- [ ] T029: reward-anim — 実装
+- [x] T029: reward-anim — 実装
 - [ ] T030: reward-anim — テスト・整合
 
 ## Phase 4: Premium ゲート (T031-T033)

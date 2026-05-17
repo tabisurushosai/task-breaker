@@ -10,6 +10,8 @@ import {
   formatPercent,
   countLeaves
 } from './checkbox-progress';
+import { decideRewardTier, TaskRewardSnapshot } from './reward-anim';
+import { playReward } from './reward-anim-render';
 
 document.addEventListener('DOMContentLoaded', async () => {
   applyI18n();
@@ -306,6 +308,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   /**
+   * Snapshot just the bits of a task that decideRewardTier inspects.
+   * Deep-clones subtasks so a subsequent in-place mutation doesn't
+   * retroactively change the "before" view.
+   */
+  const snapshotTask = (task: Task): TaskRewardSnapshot => ({
+    completed: task.completed,
+    subtasks: structuredClone(task.subtasks || [])
+  });
+
+  /**
    * Toggle the completed state of a top-level task. Cascades to all
    * descendant subtasks when the design enables it.
    */
@@ -314,14 +326,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const task = tasks.find((t) => t.id === taskId);
     if (!task) return;
 
+    const before = snapshotTask(task);
     task.completed = completed;
     if (checkboxProgressDesign.cascadeOnToggle && task.subtasks) {
       for (const child of task.subtasks) {
         cascadeComplete(child, completed);
       }
     }
+    const tier = decideRewardTier(before, snapshotTask(task));
     await setStorage({ tasks });
     renderTasks();
+    playReward(tier);
   };
 
   /**
@@ -339,14 +354,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const found = findNode(task.subtasks, nodeId);
     if (!found) return;
 
+    const before = snapshotTask(task);
     if (checkboxProgressDesign.cascadeOnToggle) {
       cascadeComplete(found.node, completed);
     } else {
       found.node.completed = completed;
     }
     recomputeTaskCompletion(task);
+    const tier = decideRewardTier(before, snapshotTask(task));
     await setStorage({ tasks });
     renderTasks();
+    playReward(tier);
   };
 
   /**
